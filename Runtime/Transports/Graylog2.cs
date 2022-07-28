@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 /*
 
@@ -18,14 +20,16 @@ namespace UnilogTransports
   {
     public void Send(LogLevel level, string message, Dictionary<string, object> keyValue);
   }
+  [Serializable]
   public class GrayLog2: ITransport
   {
-    public string ServerUrl;
+    [SerializeField]
+    private string _url;
     public Dictionary<string, object> DefaultKeyValuePairs = new Dictionary<string, object>();
 
     public GrayLog2(string url)
     {
-      ServerUrl = url;
+      _url = url;
     }
     public void Send(LogLevel level, string message, Dictionary<string, object> keyValue)
     {
