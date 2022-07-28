@@ -30,7 +30,7 @@ public static class Unilog
   private static bool _isShowClassInfo;
   private static HashSet<LogLevel> _mutedLevels = new HashSet<LogLevel>();
   private static HashSet<string> _mutedTags = new HashSet<string>();
-  private static Dictionary<string, Transports.ITransport> _transports = new Dictionary<string, Transports.ITransport>();
+  private static Dictionary<string, UnilogTransports.ITransport> _transports = new Dictionary<string, UnilogTransports.ITransport>();
 
   private static Dictionary<string, object> _keyValues = new Dictionary<string, object>();
 
@@ -42,7 +42,7 @@ public static class Unilog
   {
     return new UnilogWorker().KeyValue(key, value);
   }
-  public static void AddTransport(string name, Transports.ITransport transport)
+  public static void AddTransport(string name, UnilogTransports.ITransport transport)
   {
     _transports.Add(name, transport);
   }

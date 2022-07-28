@@ -12,13 +12,13 @@ curl -XPOST -v http://127.0.0.1:12202/gelf -p0 \
 
 */
 
-namespace Transports
+namespace UnilogTransports
 {
   public interface ITransport
   {
     public void Send(LogLevel level, string message, Dictionary<string, object> keyValue);
   }
-  public class GrayLog2
+  public class GrayLog2: ITransport
   {
     public string ServerUrl;
     public Dictionary<string, object> DefaultKeyValuePairs = new Dictionary<string, object>();
