@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
@@ -38,6 +39,7 @@ public static class Unilog
   {
     _keyValues.Add(key, value);
   }
+
   public static UnilogWorker KeyValue(string key, object value)
   {
     return new UnilogWorker().KeyValue(key, value);
@@ -50,6 +52,10 @@ public static class Unilog
   public static UnilogWorker Tag(string tag)
   {
     return new UnilogWorker().Tag(tag);
+  }
+  public static UnilogWorker Tag(Enum tagEnum)
+  {
+    return new UnilogWorker().Tag(tagEnum);
   }
   public static void Debug(params object[] data)
   {
@@ -118,9 +124,9 @@ public static class Unilog
     Output(level, null, null, data);
   }
 
-  public static void Output(LogLevel level, string tag, Dictionary<string, object> kv, params object[] data)
+  public static void Output(LogLevel level, HashSet<string> tags, Dictionary<string, object> kv, params object[] data)
   {
-    if (IsMuted(level, tag))
+    if (IsMuted(level, tags))
     {
       return;
     }
@@ -144,15 +150,18 @@ public static class Unilog
       MethodBase method = new System.Diagnostics.StackTrace().GetFrame(2).GetMethod();
       classInfo = $"<color=magenta>({method.ReflectedType.FullName}.{method})</color>";
     }
-    if (tag != null)
+    StringBuilder tagStr = new StringBuilder("");
+
+    if (tags != null)
     {
-      tag = $"<color={color.ToString()}>[{tag}]</color> ";
+      foreach(var tag in tags)
+      tagStr.Append($"<color={color.ToString()}>[{tag}]</color> ");
     }
 
-    message = $"{tag}{classInfo}{str}";
+    message = $"{tagStr.ToString()}{classInfo}{str}";
 #else
     message = $"[{tag}] {str}";
-  
+
 #endif
 
     // Sending to Graylog2 if setup
@@ -192,14 +201,16 @@ public static class Unilog
 
     return _mutedLevels.Contains(level);
   }
-  private static bool IsMuted(LogLevel level, string tag)
+  private static bool IsMuted(LogLevel level, HashSet<string> tags)
   {
     if (IsMuted(level))
       return true;
 
-    if (tag != "")
-      return _mutedTags.Contains(tag);
-
+    if (tags != null && tags.Count != 0)
+      foreach (var tag in tags)
+      {
+        return _mutedTags.Contains(tag);
+      }
     return false;
   }
 

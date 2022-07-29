@@ -1,15 +1,21 @@
+using System;
 using System.Collections.Generic;
 
 // Experimental logging library.
 // Will replace current if will be more usable
 public class UnilogWorker
 {
-  private string _tag;
+  private HashSet<string>  _tag = new HashSet<string>();
   private Dictionary<string, object> _keyValues = new Dictionary<string, object>();
 
   public UnilogWorker Tag(string tag)
   {
-    _tag = tag;
+    _tag.Add(tag);
+    return this;
+  }
+  public UnilogWorker Tag(Enum tagEnum)
+  {
+    _tag.Add(tagEnum.ToString());
     return this;
   }
 

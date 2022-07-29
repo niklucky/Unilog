@@ -1,0 +1,16 @@
+{
+    "name": "UnilogExample",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7538617536c1b492297e81103f2b8032"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
