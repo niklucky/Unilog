@@ -146,7 +146,6 @@ public static class Unilog
       foreach (var tag in tags)
         tagStr.Append($"[{tag}] ");
     }
-
     message = $"{tagStr}{str}";
 
 #endif
