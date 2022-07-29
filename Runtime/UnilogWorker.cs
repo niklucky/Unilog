@@ -25,11 +25,6 @@ public class UnilogWorker
     return this;
   }
 
-  public UnilogWorker Mute()
-  {
-    Unilog.Mute();
-    return this;
-  }
   public UnilogWorker Mute(LogLevel level)
   {
     Unilog.Mute(level);

@@ -27,7 +27,6 @@ public enum LogLevel
 
 public static class Unilog
 {
-  private static bool _isMuted;
   private static bool _isShowClassInfo;
   private static HashSet<LogLevel> _mutedLevels = new HashSet<LogLevel>();
   private static HashSet<string> _mutedTags = new HashSet<string>();
@@ -82,20 +81,14 @@ public static class Unilog
     var level = LogLevel.Error;
     Unilog.Output(level, data);
   }
-  public static UnilogWorker Mute()
-  {
-    return new UnilogWorker();
-  }
   public static UnilogWorker Mute(LogLevel level)
   {
     // Disabling total mute settings
-    _isMuted = false;
     _mutedLevels.Add(level);
     return new UnilogWorker();
   }
   public static UnilogWorker Mute(string tag)
   {
-    _isMuted = false;
     if (tag != "")
       _mutedTags.Add(tag);
 
@@ -103,19 +96,18 @@ public static class Unilog
   }
   public static UnilogWorker Unmute()
   {
-    _isMuted = false;
+    _mutedTags.Clear();
+    _mutedLevels.Clear();
     return new UnilogWorker();
   }
   public static UnilogWorker Unmute(LogLevel level)
   {
-    _isMuted = false;
     _mutedLevels.Remove(level);
 
     return new UnilogWorker();
   }
   public static UnilogWorker Unmute(string tag)
   {
-    _isMuted = false;
     _mutedTags.Remove(tag);
     return new UnilogWorker();
   }
@@ -160,7 +152,7 @@ public static class Unilog
 
     message = $"{tagStr.ToString()}{classInfo}{str}";
 #else
-    message = $"[{tag}] {str}";
+    message = $"[{tagStr}] {str}";
 
 #endif
 
@@ -196,16 +188,10 @@ public static class Unilog
 
   private static bool IsMuted(LogLevel level)
   {
-    if (_isMuted)
-      return true;
-
     return _mutedLevels.Contains(level);
   }
   private static bool IsMuted(LogLevel level, HashSet<string> tags)
   {
-    if (IsMuted(level))
-      return true;
-
     if (tags != null && tags.Count != 0)
       foreach (var tag in tags)
       {
