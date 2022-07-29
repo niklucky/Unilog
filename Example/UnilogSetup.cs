@@ -29,5 +29,8 @@ public class UnilogSetup : MonoBehaviour
 
         Unilog.Mute("test");
         Unilog.Tag("test").Tag("tag2").Tag(TestEnum.Example).Log("Muted log");
+
+        Unilog.Mute(LogLevel.Info);
+        Unilog.Tag("test33").Info("Message");
     }
 }

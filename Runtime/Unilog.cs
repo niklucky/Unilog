@@ -186,6 +186,10 @@ public static class Unilog
   }
   private static bool IsMuted(LogLevel level, HashSet<string> tags)
   {
+    if (_mutedLevels.Contains(level))
+    {
+      return true;
+    }
     if (tags != null && tags.Count != 0)
       foreach (var tag in tags)
       {
