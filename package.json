@@ -1,13 +1,14 @@
 {
   "name": "com.niklucky.unilog",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "displayName": "Unity logger",
   "description": "I will add later",
   "unity": "2019.1",
   "unityRelease": "0b5",
-  "documentationUrl": "https://example.com/",
-  "changelogUrl": "https://example.com/changelog.html",
-  "licensesUrl": "https://example.com/licensing.html",
+  "documentationUrl": "https://github.com/niklucky/Unilog",
+  "changelogUrl": "https://github.com/niklucky/Unilog",
+  "license": "MIT",
+  "licensesUrl": "https://github.com/niklucky/Unilog/blob/main/LICENSE.md",
   "dependencies": {
  },
  "keywords": [
@@ -18,6 +19,6 @@
   "author": {
     "name": "Nik",
     "email": "iam@niklucky.com",
-    "url": "https://www.unity3d.com"
+    "url": "https://github.com/niklucky"
   }
 }
