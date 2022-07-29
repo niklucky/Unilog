@@ -131,28 +131,23 @@ public static class Unilog
     string str = string.Join(",", arr);
     string color = GetColor(level);
     string message = "";
-
-#if UNITY_EDITOR
-    string classInfo = "";
-    if (_isShowClassInfo)
-    {
-      StackFrame frame = new StackFrame(1);
-      // string methodName = frame.GetMethod().Name;
-      // string className = frame.GetMethod().DeclaringType.Name;
-      MethodBase method = new System.Diagnostics.StackTrace().GetFrame(2).GetMethod();
-      classInfo = $"<color=magenta>({method.ReflectedType.FullName}.{method})</color>";
-    }
     StringBuilder tagStr = new StringBuilder("");
 
+#if UNITY_EDITOR
     if (tags != null)
     {
-      foreach(var tag in tags)
-      tagStr.Append($"<color={color.ToString()}>[{tag}]</color> ");
+      foreach (var tag in tags)
+        tagStr.Append($"<color={color.ToString()}>[{tag}]</color> ");
+    }
+    message = $"{tagStr}{str}";
+#else
+    if (tags != null)
+    {
+      foreach (var tag in tags)
+        tagStr.Append($"[{tag}] ");
     }
 
-    message = $"{tagStr.ToString()}{classInfo}{str}";
-#else
-    message = $"[{tagStr}] {str}";
+    message = $"{tagStr}{str}";
 
 #endif
 
