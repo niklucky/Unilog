@@ -9,7 +9,7 @@ public enum TestEnum {
 
 public class UnilogSetup : MonoBehaviour
 {
-    [SerializeField] UnilogTransports.GrayLog2 _graylog;
+    [SerializeField] UnilogTransports.GrayLog _graylog;
     [SerializeField] bool _isMuted;
     [SerializeField] LogLevel _muteLevels;
     [SerializeField] List<string> _muteTags;

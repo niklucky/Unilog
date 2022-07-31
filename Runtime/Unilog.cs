@@ -15,16 +15,6 @@ public enum LogColors
   lightblue,
 }
 
-public enum LogLevel
-{
-  Debug = 1,
-  Info,
-  Log,
-  Warning,
-  Error,
-  Fatal,
-}
-
 public static class Unilog
 {
   private static bool _isShowClassInfo;
@@ -162,7 +152,7 @@ public static class Unilog
             kv.Add(item.Key, item.Value);
           }
         }
-        transport.Value.Send(level, message, _keyValues);
+        transport.Value.SendAsync(level, message, tags, _keyValues);
       }
     }
     // Logging to console by Unity
@@ -171,7 +161,7 @@ public static class Unilog
       UnityEngine.Debug.LogWarning(message);
       return;
     }
-    if (level == LogLevel.Error || level == LogLevel.Fatal)
+    if (level == LogLevel.Error || level == LogLevel.Critical)
     {
       UnityEngine.Debug.LogError(message);
       return;
@@ -212,7 +202,7 @@ public static class Unilog
     {
       return LogColors.lightblue.ToString();
     }
-    if (level == LogLevel.Error || level == LogLevel.Fatal)
+    if (level == LogLevel.Error || level == LogLevel.Critical)
     {
       return LogColors.red.ToString();
     }

@@ -16,26 +16,22 @@ curl -XPOST -v http://127.0.0.1:12202/gelf -p0 \
 
 namespace UnilogTransports
 {
-  public interface ITransport
-  {
-    public void Send(LogLevel level, string message, Dictionary<string, object> keyValue);
-  }
   [Serializable]
-  public class GrayLog2: ITransport
+  public class GrayLog: ITransport
   {
     [SerializeField]
     private string _url;
     public Dictionary<string, object> DefaultKeyValuePairs = new Dictionary<string, object>();
 
-    public GrayLog2(string url)
+    public GrayLog(string url)
     {
       _url = url;
     }
-    public void Send(LogLevel level, string message, Dictionary<string, object> keyValue)
+    public async void SendAsync(LogLevel level, string message, IEnumerable<string> tags, Dictionary<string, object> keyValue)
     {
       // Sending message to graylog2 server 
       // Don't forget about default key/value pairs
-
+      
     }
   }
 }
