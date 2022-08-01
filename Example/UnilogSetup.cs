@@ -16,7 +16,7 @@ public class UnilogSetup : MonoBehaviour
       Debug.Log("Setting graylog");
       Unilog.AddTransport("graylog", new UnilogTransports.GrayLog(_graylogOptions));
     }
-    Unilog.KeyValue("key1", 1).KeyValue("key2", "222").Tag("tag1").Error("CYBERPUCK: new test error message");
+    Unilog.KeyValue("key1", 1).KeyValue("key2", "222").Tag("tag1").Error("Test error message with tags and key/values");
     foreach (var tag in _muteTags)
     {
       Unilog.Mute(tag);
