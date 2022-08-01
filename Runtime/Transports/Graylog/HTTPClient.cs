@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace UnilogTransports.Graylog
 {
@@ -17,7 +18,7 @@ namespace UnilogTransports.Graylog
                 Host = options.Host,
                 Port = options.Port
             };
-
+            Debug.Log(uriBuilder.Uri);
             _httpClient = new HttpClient
             {
                 BaseAddress = uriBuilder.Uri,
@@ -32,9 +33,10 @@ namespace UnilogTransports.Graylog
 
         public async Task SendMessageAsync(GELFMessage message)
         {
-            // var content = new StringContent(message.ToJson(), Encoding.UTF8, "application/json");
-            // var result = await _httpClient.PostAsync("gelf", content);
-            // result.EnsureSuccessStatusCode();
+            var json = message.ToJson();
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var result = await _httpClient.PostAsync("gelf", content);
+            result.EnsureSuccessStatusCode();
         }
 
         public void Dispose()

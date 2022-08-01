@@ -2,36 +2,62 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-
-Graylog example:
-curl -XPOST -v http://127.0.0.1:12202/gelf -p0 \
--d $'{"short_message":"Bulk message 1", "host":"example.org", "facility":"test", "_foo":"bar"}\r\n\
-{"short_message":"Bulk message 2", "host":"example.org", "facility":"test", "_foo":"bar"}\r\n\
-{"short_message":"Bulk message 3", "host":"example.org", "facility":"test", "_foo":"bar"}\r\n\
-{"short_message":"Bulk message 4", "host":"example.org", "facility":"test", "_foo":"bar"}\r\n\
-{"short_message":"Bulk message 5", "host":"example.org", "facility":"test", "_foo":"bar"}'
-
-*/
-
 namespace UnilogTransports
 {
   [Serializable]
-  public class GrayLog: ITransport
+  public class GrayLog : ITransport
   {
-    [SerializeField]
-    private string _url;
-    public Dictionary<string, object> DefaultKeyValuePairs = new Dictionary<string, object>();
 
-    public GrayLog(string url)
+    [SerializeField]
+    private Graylog.Options _options;
+
+    [SerializeField]
+    public Dictionary<string, object> AdditionalFields = new Dictionary<string, object>();
+
+    private Graylog.IGELFClient _client;
+
+    public GrayLog(string host, int port)
     {
-      _url = url;
+      _options = new Graylog.Options()
+      {
+        Port = port,
+        Host = host,
+        Protocol = Graylog.Protocol.Http
+      };
+      InitClient();
     }
-    public async void SendAsync(LogLevel level, string message, IEnumerable<string> tags, Dictionary<string, object> keyValue)
+    public GrayLog(Graylog.Options options)
     {
-      // Sending message to graylog2 server 
-      // Don't forget about default key/value pairs
-      
+      _options = options;
+      InitClient();
+    }
+    private void InitClient()
+    {
+      if (_options.Protocol == Graylog.Protocol.Http)
+      {
+        _client = new Graylog.HttpGelfClient(_options);
+      }
+      if (_options.Protocol == Graylog.Protocol.Udp)
+      {
+        _client = new Graylog.UdpGelfClient(_options);
+      }
+    }
+
+    public void SendAsync(LogLevel level, string message, IEnumerable<string> tags, Dictionary<string, object> keyValue)
+    {
+      if (_options == null)
+      {
+        Debug.LogError("Graylog is not properly configured");
+      }
+
+      _client.SendMessageAsync(new Graylog.GELFMessage()
+      {
+        ShortMessage = message,
+        Level = level,
+        Timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000,
+        AdditionalFields = keyValue,
+        Tags = tags,
+      });
     }
   }
 }

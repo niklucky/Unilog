@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UnilogTransports.Graylog
 {
+    [Serializable]
     public class Options
     {
         /// <summary>
@@ -13,27 +15,23 @@ namespace UnilogTransports.Graylog
         /// <summary>
         ///     Protocol used to send logs.
         /// </summary>
-        public Protocol Protocol { get; set; } = Protocol.Udp;
+        [SerializeField]
+        public Protocol Protocol = Protocol.Udp;
 
         /// <summary>
         ///     GELF server host.
         /// </summary>
-        public string? Host { get; set; }
+        public string Host;
 
         /// <summary>
         ///     GELF server port.
         /// </summary>
-        public int Port { get; set; } = 12201;
-
-        /// <summary>
-        ///     Log source name mapped to the GELF host field (required).
-        /// </summary>
-        public string? LogSource { get; set; }
+        public int Port = 12201;
 
         /// <summary>
         ///     Enable GZip message compression for UDP logging.
         /// </summary>
-        public bool CompressUdp { get; set; } = true;
+        public bool CompressUdp = true;
 
         /// <summary>
         ///     The UDP message size in bytes under which messages will not be compressed.
@@ -48,7 +46,7 @@ namespace UnilogTransports.Graylog
         /// <summary>
         ///     Additional fields that will be attached to all log messages.
         /// </summary>
-        public Dictionary<string, object> AdditionalFields { get; set; } = new();
+        public Dictionary<string, object> AdditionalFields = new();
 
         /// <summary>
         ///     Headers used when sending logs via HTTP(S).

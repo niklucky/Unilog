@@ -152,7 +152,7 @@ public static class Unilog
             kv.Add(item.Key, item.Value);
           }
         }
-        transport.Value.SendAsync(level, message, tags, _keyValues);
+        transport.Value.SendAsync(level, str, tags, kv);
       }
     }
     // Logging to console by Unity
